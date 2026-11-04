@@ -5,3 +5,16 @@ def gcd(a: int, b: int) -> int:
     while b != 0:
         a, b = b, a % b         # Lemma 1.5
     return a                    # Lemma 1.6.3
+
+def xgcd(a: int, b: int) -> tuple[int, int, int]:
+    """Return (d, x, y) with d = gcd(a, b) and a*x + b*y == d, for a, b >= 0."""
+    r0, r1 = a, b
+    s0, s1 = 1, 0
+    t0, t1 = 0, 1
+    # Invariant: r0 == s0*a + t0*b  and  r1 == s1*a + t1*b   (Lemma 1.7.4)
+    while r1 != 0:
+        q = r0 // r1
+        r0, r1 = r1, r0 - q * r1
+        s0, s1 = s1, s0 - q * s1
+        t0, t1 = t1, t0 - q * t1
+    return r0, s0, t0
