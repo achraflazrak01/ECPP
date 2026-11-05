@@ -18,3 +18,39 @@ def xgcd(a: int, b: int) -> tuple[int, int, int]:
         s0, s1 = s1, s0 - q * s1
         t0, t1 = t1, t0 - q * t1
     return r0, s0, t0
+
+def inverse_or_none(a: int, n: int) -> int | None:
+    """Inverse of a modulo n (n >= 2), or None if gcd(a, n) > 1."""
+    d, x, _ = xgcd(a % n, n)
+    if d != 1:
+        return None
+    return x % n
+
+def inverse_brute(a: int, n: int) -> int | None:
+    a %= n
+    for x in range(n):
+        if (a * x) % n == 1:
+            return x
+    return None
+
+class NotInvertible(Exception):
+    """a has no inverse modulo n. The attribute g = gcd(a, n) is a factor of n."""
+    def __init__(self, a, n, g):
+        super().__init__(f"{a} has no inverse modulo {n} (gcd = {g})") # the factor we want to keep
+        self.g = g
+
+def inverse_mod(a: int, n: int) -> int:
+    """Inverse of a modulo n (n >= 2), or NotInvertible Exception if gcd(a, n) > 1."""
+    d, x, _ = xgcd(a % n, n)
+    if d != 1:
+        raise NotInvertible(a, n, d)
+    return x % n
+
+def find_factor(n: int, candidates: list[int])-> int | None:
+    for a in candidates:
+        try:
+            inverse_mod(a, n)
+        except NotInvertible as e:
+            return e.g
+    return None
+

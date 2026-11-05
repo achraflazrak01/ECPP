@@ -1,6 +1,6 @@
 import math
 
-from number_theory import gcd, xgcd
+from number_theory import *
 import random
 
 rng = random.Random(42)
@@ -37,6 +37,21 @@ def test_xgcd():
         assert a * x + b * y == d
         assert d == gcd(a, b)
 
+def test_inverse():
+    print("test1")
+    for n in range(2, 200):
+        for a in range(n):
+            assert inverse_or_none(a, n) == inverse_brute(a, n)
+    print("test2")
+    for _ in range(5000):
+        n = random_number() + 2
+        a = random_number() - random_number()
+        try:
+            x = inverse_mod(a, n)
+            assert 0 <= x < n and (a * x) % n == 1
+        except NotInvertible as e:
+            assert e.g > 1 and a % e.g == 0 and n % e.g == 0
+
 
 if __name__ == "__main__":
     test_gcd_examples()
@@ -46,3 +61,8 @@ if __name__ == "__main__":
     print("All tests passed.")
     test_xgcd()
     print("All tests passed.")
+    test_inverse()
+    print("All tests passed.")
+    assert inverse_mod(17, 3120) == 2753
+    print("All tests passed.")
+    print(find_factor(91, [2, 3, 5, 7, 11]))
