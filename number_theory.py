@@ -1,3 +1,4 @@
+
 def gcd(a: int, b: int) -> int:
     """Greatest common divisor of a >= 0 and b >= 0 (Theorem 1.6)."""
     # Invariant: gcd(a, b) never changes   (Lemma 1.6.2)
@@ -54,3 +55,44 @@ def find_factor(n: int, candidates: list[int])-> int | None:
             return e.g
     return None
 
+def is_prime_trial(n: int) -> bool:
+    """True if n is prime, by trial division up to sqrt(n)."""
+    if n < 2:
+        return False
+    d = 2
+    while d * d <= n:
+        if n % d == 0:
+            return False
+        d += 1
+    return True
+
+def primes_up_to(n: int) -> list[int]:
+    """Sieve of Eratosthenes: the list of all primes p <= n."""
+    if n < 2:
+        return []
+    is_prime = [True] * (n + 1)
+    is_prime[0] = False
+    is_prime[1] = False
+    p = 2
+    while p * p <= n:
+        if is_prime[p]:
+            for m in range(p * p, n + 1, p):
+                is_prime[m] = False
+        p += 1
+    return [i for i in range(n + 1) if is_prime[i]]
+
+def factor_trial(n: int):
+    """Factor n >= 1 as a list of (p, e) pairs, p increasing."""
+    factors = []
+    p = 2
+    while p * p <= n:
+        if n % p == 0:
+            e = 0
+            while n % p == 0:
+                n //= p
+                e += 1
+            factors.append((p, e))
+        p += 1
+    if n > 1:
+        factors.append((n, 1))
+    return factors
