@@ -1,5 +1,5 @@
 
-from number_theory import inverse_mod
+from number_theory import inverse_mod, gcd, is_prime_trial
 
 
 class Mod:
@@ -82,3 +82,9 @@ class Mod:
             return self.inverse() ** (-e)
 
         return Mod(pow(self.value, e, self.n), self.n)
+
+def fermat_liars(n):
+    """Bases 1 <= a < n with gcd(a, n) = 1 and a**(n-1) = 1 mod n."""
+    return [a for a in range(1, n) if gcd(a, n) == 1 and pow(a, n - 1, n) == 1]
+
+print(fermat_liars(7))
