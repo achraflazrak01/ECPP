@@ -1,4 +1,4 @@
-from modular import Mod
+from modular import *
 
 import random
 
@@ -23,3 +23,5 @@ def test_mod_class():
 
 if __name__ == "__main__":
     test_mod_class()
+    assert crt_pair(2, 3, 3, 5) == 8
+    assert crt([2, 3, 2], [3, 5, 7]) == 23

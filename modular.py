@@ -87,4 +87,16 @@ def fermat_liars(n):
     """Bases 1 <= a < n with gcd(a, n) = 1 and a**(n-1) = 1 mod n."""
     return [a for a in range(1, n) if gcd(a, n) == 1 and pow(a, n - 1, n) == 1]
 
-print(fermat_liars(7))
+def crt_pair(a, n, b, m):
+    """The x in [0, n*m) with x = a mod n and x = b mod m, for gcd(n, m) = 1."""
+    m_inv = inverse_mod(m, n)           # m * m_inv = 1 mod n
+    n_inv = inverse_mod(n, m)           # n * n_inv = 1 mod m
+    return (a * m * m_inv + b * n * n_inv) % (n * m)
+
+def crt(residues, moduli):
+    """Solve x = residues[i] mod moduli[i] for pairwise coprime moduli."""
+    x, N = 0, 1
+    for a, n in zip(residues, moduli):
+        x = crt_pair(x, N, a, n)
+        N *= n
+    return x
