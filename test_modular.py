@@ -21,7 +21,32 @@ def test_mod_class():
         assert Mod(x, n) * Mod(y, n) == Mod(x * y, n)
         assert Mod(x, n) + Mod(y, n) == Mod(x + y, n)
 
+def random_number(max_bits=256):
+    bits = rng.randint(0, max_bits)
+    return rng.getrandbits(bits)
+
+def test_naive_exp_random():
+    for _ in range(2000):
+        a = random_number(200)
+        e = random_number(200)
+        n = random_number(200)
+        while n == 0:
+            n = random_number(200)
+        assert pow_naive(a, e, n) == pow(a, e, n)
+
+
+def test_fast_exp_random():
+    for _ in range(2000):
+        a = random_number(200)
+        e = random_number(200)
+        n = random_number(200)
+        while n == 0:
+            n = random_number(200)
+        assert pow_mod(a, e, n) == pow(a, e, n)
+
 if __name__ == "__main__":
     test_mod_class()
     assert crt_pair(2, 3, 3, 5) == 8
     assert crt([2, 3, 2], [3, 5, 7]) == 23
+    test_fast_exp_random()
+    assert pow_naive(3, 13, 7) == 3

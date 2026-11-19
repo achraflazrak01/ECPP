@@ -1,3 +1,4 @@
+from unittest import result
 
 from number_theory import inverse_mod, gcd, is_prime_trial
 
@@ -100,3 +101,25 @@ def crt(residues, moduli):
         x = crt_pair(x, N, a, n)
         N *= n
     return x
+
+def pow_naive(a, e, n):
+    """a**e mod n by e multiplications. Cost: O(e) multiplications."""
+    result = 1 % n
+    for _ in range(e):
+        result = (result * a) % n
+    return result
+
+def pow_mod(a, e, n):
+    result = 1 % n
+    base = a % n
+    # Invariant: result * base**e == a0**e0 (mod n)
+    while e > 0:
+        if e % 2 == 1:
+            result = (result * base) % n
+        base = (base ** 2) % n
+        e = e // 2
+    return result
+
+
+
+
