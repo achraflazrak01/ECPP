@@ -120,6 +120,15 @@ def pow_mod(a, e, n):
         e = e // 2
     return result
 
+def units(n: int) -> list[int]:
+    """Return all invertible residues modulo n."""
+    if n < 1:
+        raise ValueError("n must be positive")
+    return [a for a in range(n) if gcd(a,n) == 1]
+
+def phi(n: int) -> int:
+    """Euler's totient: number of units modulo n."""
+    return len(units(n))
 
 
 
