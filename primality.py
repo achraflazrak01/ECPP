@@ -27,3 +27,15 @@ def may_be_prime(n: int)-> bool:
             return False
     return True
 
+
+def lucas_check(n, a, prime_factors):
+    """Lucas: a^(n-1) == 1 and a^((n-1)/q) != 1 for each prime q | n-1."""
+    if pow_mod(a, n-1, n) != 1:
+        return False
+    for q in prime_factors:
+        if pow_mod(a, (n - 1) // q, n) == 1:
+            return False
+    return True
+
+print(lucas_check(97, 5, [2, 3]), lucas_check(101, 2, [2, 5]))   # True True
+print(lucas_check(97, 2, [2, 3]))
